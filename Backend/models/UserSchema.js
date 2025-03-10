@@ -1,4 +1,4 @@
-import mongoose from "mongoose ";
+
 const mongoose = require("mongoose");
 
 //This is  the schema for the User 
