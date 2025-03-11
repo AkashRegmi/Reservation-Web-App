@@ -13,7 +13,7 @@ const signUpValidator = [
     
   ];
 
-  router.post("/sign-up",signUpValidator, signup);
+  router.post("/signup",signUpValidator, signup);
 
   module.exports=router;
 

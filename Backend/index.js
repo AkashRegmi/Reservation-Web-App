@@ -13,7 +13,7 @@ connectdb();
 const authRoute = require("./Routes/authRoute");
 // console.log(process.env)
 
-app.use("api/auth", authRoute);
+app.use("/api/auth", authRoute);
 
 app.all("*", (req, res) => {
   res.status(402).json({

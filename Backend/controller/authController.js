@@ -1,25 +1,33 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models/UserSchema");
+const User  = require("../models/UserSchema");
+const {JWT_SECRET}=require("../config/constant")
 
- const signup = async (req, res) => {
+
+const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+        // Check if all required fields are present
+        if (!name || !email || !password) {
+          return res.status(400).json({ message: "All fields are required (name, email, password)" });
+        }
 
     // Check for the user is already there.
 
-    const existingUser = User.findOne({ email });
+    const existingUser =  await User.findOne({ email});
     if (existingUser) {
-      res.status(400).json({
+      console.log(existingUser)
+       res.status(400).json({
         message: "User Already Exist",
+        
       });
       return;
     }
 
     //hashing the Password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hashSync(password, salt);
+    const salt =   bcrypt.genSaltSync(10);
+    const hashedPassword =  bcrypt.hashSync(password, salt);
 
     //Savinfg the user in the Mongodb
     const newUser = new User({
@@ -27,7 +35,7 @@ const { User } = require("../models/UserSchema");
       email,
       password: hashedPassword,
     });
-    await newUser.Save();
+    await newUser.save();
     //Generating the token
 
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
@@ -39,11 +47,15 @@ const { User } = require("../models/UserSchema");
       token,
       userId: newUser._id,
     });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+  } catch (err) {
+    console.error("Error during signup:", err);
+    res.status(500).json({
+      message: "Server error",
+      error: err.message || "Unknown error",
+    });
   }
 };
 
-module.exports={
-    signup,
-}
+module.exports = {
+  signup,
+};
