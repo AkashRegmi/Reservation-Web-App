@@ -56,6 +56,45 @@ const signup = async (req, res) => {
   }
 };
 
+const signin= async(req,res)=>{
+  try {
+    const{email,password}=req.body;;
+    const user = await User.findOne({email});
+    if(!user){
+      return res.status(400).json({
+        message:"User not Found.Please Sign-Up!"
+      })
+    }
+     
+    const isValidPassword= await bcrypt.compare(password,user.password);
+    if(!isValidPassword){
+      return res.status(400).json({
+        message:"Invalid Credential"
+      })
+    }
+    const token = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+  );
+
+  // Send response with token
+  res.status(200).json({
+      message: "Login successful",
+      token,
+      userId: user._id
+  });
+  } catch (error) {
+    res.status(500).json({
+      message:"Internal Server Error ",
+      error:error.message || "Unknown error"
+    })
+  }
+ 
+
+}
+
 module.exports = {
   signup,
+  signin,
 };

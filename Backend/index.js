@@ -11,9 +11,11 @@ app.use(cors());
 app.use(cookieParser());
 connectdb();
 const authRoute = require("./Routes/authRoute");
+const login= require("./Routes/authRoute")
 // console.log(process.env)
 
 app.use("/api/auth", authRoute);
+app.use("/api/auth", login)
 
 app.all("*", (req, res) => {
   res.status(402).json({
