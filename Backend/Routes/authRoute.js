@@ -1,21 +1,14 @@
-const express= require("express");
-const { signup, signin } = require( "../controller/authController");
+const express = require("express");
+const { signup, signin } = require("../controller/authController");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
+const {
+  validateSignin,
+  validateSignup,
+} = require("../middleware/authMiddleware");
 
-const signUpValidator = [
-    body("email").notEmpty().isEmail().withMessage("invalid email"),
-    body("name")
-      .isLength({ min: 3, max: 20 })
-      .notEmpty()
-      .withMessage("please entre the name betn 3 and 20 characers"),
-    body("password").notEmpty(),
-    
-  ];
+router.post("/signup", validateSignup, signup);
 
-  router.post("/signup",signUpValidator, signup);
+router.post("/signin", validateSignin, signin);
 
-  router.post("/signin",signin)
-
-  module.exports=router;
-
+module.exports = router;
