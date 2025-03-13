@@ -5,6 +5,10 @@ const createReservation = async (req, res) => {
   try {
     const { date, time, guests } = req.body;
     const userId = req.userId;
+      // Check if `userId` exists
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is missing. Please authenticate." });
+      }
 
     const newReservation = new Reservation({
       user: userId,

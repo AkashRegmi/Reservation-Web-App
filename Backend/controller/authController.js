@@ -38,15 +38,15 @@ const signup = async (req, res) => {
     await newUser.save();
     //Generating the token
 
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    // const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+    //   expiresIn: "7d",
+    // });
 
-    res.status(201).json({
-      message: "User created successfully",
-      token,
-      userId: newUser._id,
-    });
+    // res.status(201).json({
+    //   message: "User created successfully",
+    //   token,
+    //   userId: newUser._id,
+    // });
   } catch (err) {
     console.error("Error during signup:", err);
     res.status(500).json({
