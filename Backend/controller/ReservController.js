@@ -3,8 +3,9 @@ const Reservation = require("../models/ReservationSchema"); // ✅ Correct impor
 // Create a new reservation
 const createReservation = async (req, res) => {
   try {
+   
     const { date, time, guests } = req.body;
-    const userId = req.body.userId;
+    const userId = req.userId;
       //Checking the User id 
       if (!userId) {
         return res.status(400).json({ message: "User ID is missing. Please authenticate." });
