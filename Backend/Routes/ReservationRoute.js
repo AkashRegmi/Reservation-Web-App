@@ -9,7 +9,7 @@ const router = express.Router();
 
 // User must be logged in (JWT required)
 router.post('/create', checkAuth ,createReservation);
-router.get('/mybookings',  getUserReservation);
-router.delete('/cancel/:bookingId',  cancelReservation);
+router.get('/mybookings', checkAuth, getUserReservation);
+router.delete('/cancel/:bookingId', checkAuth, cancelReservation);
 
 module.exports=router;

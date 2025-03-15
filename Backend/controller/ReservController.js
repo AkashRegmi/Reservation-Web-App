@@ -1,11 +1,11 @@
-const Reservation = require("../models/ReservationSchema"); // ✅ Correct import
+const Reservation = require("../models/ReservationSchema"); // 
 
 // Create a new reservation
 const createReservation = async (req, res) => {
   try {
    
     const { date, time, guests } = req.body;
-    // const userId = req.userId;
+   
     const userId = req.authUser?.userId; 
       //Checking the User id 
       if (!userId) {
@@ -33,7 +33,7 @@ const createReservation = async (req, res) => {
 // Get reservations for a user
 const getUserReservation = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.authUser?.userId; 
     const reservations = await Reservation.find({ user: userId });
 
     res.status(200).json(reservations);
@@ -43,26 +43,49 @@ const getUserReservation = async (req, res) => {
 };
 
 // Cancel a reservation
+// const cancelReservation = async (req, res) => {
+//   try {
+//     const { reservationId } = req.params;
+//     const userId = req.authUser?.userId; 
+
+//     const reservation = await Reservation.findOne({
+//       _id: reservationId,
+//       user: userId,
+//     });
+
+//     if (!reservation) return res.status(404).json({ message: "Booking not found" });
+
+//     reservation.status = "cancelled";
+//     await reservation.save();
+
+//     res.status(200).json({ message: "Booking cancelled", reservation });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error cancelling booking", error: error.message });
+//   }
+// };
 const cancelReservation = async (req, res) => {
   try {
+    const userId = req.authUser?.userId;
     const { reservationId } = req.params;
-    const userId = req.userId;
 
-    const reservation = await Reservation.findOne({
-      _id: reservationId,
-      user: userId,
-    });
+    // Checking if the user ID is available
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is missing. Please authenticate." });
+    }
 
-    if (!reservation) return res.status(404).json({ message: "Booking not found" });
+    // Finding the reservation and ensuring it belongs to the user
+    const reservation = await Reservation.findOne({ _id: reservationId, user: userId });
+    if (!reservation) {
+      return res.status(404).json({ message: "Reservation not found or unauthorized." });
+    }
 
-    reservation.status = "cancelled";
-    await reservation.save();
-
-    res.status(200).json({ message: "Booking cancelled", reservation });
+    await Reservation.findByIdAndDelete(reservationId);
+    res.status(200).json({ message: "Reservation deleted successfully." });
   } catch (error) {
-    res.status(500).json({ message: "Error cancelling booking", error: error.message });
+    res.status(500).json({ message: "Error deleting reservation", error: error.message });
   }
 };
+
 
 module.exports = {
   createReservation,
