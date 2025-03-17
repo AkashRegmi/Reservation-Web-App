@@ -15,7 +15,7 @@ const checkAuth = (req, res, next) => {
     //   console.log(user);
       next();
     } catch (error) {
-      res.status(401).json({ message: "unauthorize token" });
+      res.status(401).json({ message: "unauthorize tokennnnnn" });
     }
   };
 
@@ -24,12 +24,13 @@ const checkAuth = (req, res, next) => {
     const token  =  req.cookies?.token || req.headers.tokens;
     // const { token } = req.headers; //const token=req.headers.token they both are same .
     try {
-      const user = jwt.verify(token, JWT_SECRET_KEY);
-      // console.log("Verified user:", user); 
+      const user = jwt.verify(token, JWT_SECRET);
+      console.log("Verified user:", user); 
+     
       if (!user.roles.includes("admin")) {
         res
           .status(401)
-          .json({ message: "Only Admin can access(Unauthorize Action)" });
+          .json({ message: "Only Admin can post the credir access(Unauthorize Action)" });
         return;
       }
       req.authUser = user;
@@ -37,7 +38,7 @@ const checkAuth = (req, res, next) => {
       next();
     } catch (error) {
       
-      res.status(401).json({ message: "unauthorize token" });
+      res.status(401).json({ message: error.message});
   
     }
   };
