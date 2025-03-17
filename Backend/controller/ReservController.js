@@ -66,20 +66,20 @@ const getUserReservation = async (req, res) => {
 const cancelReservation = async (req, res) => {
   try {
     const userId = req.authUser?.userId;
-    const { reservationId } = req.params;
+    // const { reservationId } = req.params;
 
     // Checking if the user ID is available
-    if (!userId) {
-      return res.status(400).json({ message: "User ID is missing. Please authenticate." });
-    }
+    // if (!userId) {
+    //   return res.status(400).json({ message: "User ID is missing. Please authenticate." });
+    // }
 
-    // Finding the reservation and ensuring it belongs to the user
-    const reservation = await Reservation.findOne({ _id: reservationId, user: userId });
-    if (!reservation) {
-      return res.status(404).json({ message: "Reservation not found or unauthorized." });
-    }
+    // // Finding the reservation and ensuring it belongs to the user
+    // const reservation = await Reservation.findOne({ _id: reservationId, user: userId });
+    // if (!reservation) {
+    //   return res.status(404).json({ message: "Reservation not found or unauthorized." });
+    // }
 
-    await Reservation.findByIdAndDelete(reservationId);
+    await Reservation.deleteOne({_id:req.params.id});
     res.status(200).json({ message: "Reservation deleted successfully." });
   } catch (error) {
     res.status(500).json({ message: "Error deleting reservation", error: error.message });
