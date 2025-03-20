@@ -6,13 +6,14 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
   return <>
+  <ToastContainer/>
   <BrowserRouter>
   <Routes>
     <Route path="/signup" element={<Signup/>}/>
     <Route path="/signin" element={<Signin/>}/>
   </Routes>
   </BrowserRouter>
-  <ToastContainer/>
+  
   </>;
 
 

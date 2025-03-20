@@ -37,12 +37,13 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
+      console.log("before fetching ")
       const response = await axios.post(
         "http://localhost:5001/api/auth/signup",
         data
       );
       console.log("Response:", response);
-      toast.success("Signup successful!");
+      toast.success(response.data.message);
       setTimeout(() => navigate("/signin"), 1500);
     } catch (error) {
       console.error("Signup Error:", error);
@@ -51,56 +52,57 @@ const Signup = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            {...register("name")}
-            style={{ width: "100%", padding: "8px" }}
-          />
-          <p style={{ color: "red", fontSize: "12px" }}>
-            {errors.name?.message}
-          </p>
-        </div>
+    <div style={{ maxWidth: "400px", margin: "auto", padding: "20px",}}>
+    <h2>Signup</h2>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <label>Name:</label>
+        <input
+          type="text"
+          {...register("name")}
+          style={{ width: "100%", padding: "8px" }}
+        />
+        <p style={{ color: "red", fontSize: "12px" }}>
+          {errors.name?.message}
+        </p>
+      </div>
 
-        {/* Email Input */}
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            {...register("email")}
-            style={{ width: "100%", padding: "8px" }}
-          />
-          <p style={{ color: "red", fontSize: "12px" }}>
-            {errors.email?.message}
-          </p>
-        </div>
+      {/* Email Input */}
+      <div>
+        <label>Email:</label>
+        <input
+          type="email"
+          {...register("email")}
+          style={{ width: "100%", padding: "8px" }}
+        />
+        <p style={{ color: "red", fontSize: "12px" }}>
+          {errors.email?.message}
+        </p>
+      </div>
 
-        {/* Password Input */}
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            {...register("password")}
-            style={{ width: "100%", padding: "8px" }}
-          />
-          <p style={{ color: "red", fontSize: "12px" }}>
-            {errors.password?.message}
-          </p>
-        </div>
+      {/* Password Input */}
+      <div>
+        <label>Password:</label>
+        <input
+          type="password"
+          {...register("password")}
+          style={{ width: "100%", padding: "8px" }}
+        />
+        <p style={{ color: "red", fontSize: "12px" }}>
+          {errors.password?.message}
+        </p>
+      </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          style={{ marginTop: "10px", padding: "10px", width: "100%" }}
-        >
-          Signup
-        </button>
-      </form>
-    </div>
+      {/* Submit Button */}
+      <button
+        type="submit"
+        style={{ marginTop: "10px", padding: "10px", width: "100%" }}
+      >
+        Signup
+      </button>
+    </form>
+  </div>
+   
   );
 };
 
