@@ -46,7 +46,7 @@ const Signin = () => {
       // navigate("/dashboard");
     } catch (error) {
       console.error("Sign In Error:", error);
-      toast.error(error.response?.data?.message || "Sign In Failed");
+      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
     }
   };
 
