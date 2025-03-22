@@ -24,12 +24,13 @@ const Signin = () => {
     setLoading(true);
     try {
       const response = await axios.post("http://localhost:5001/api/auth/signin", data);
+      console.log(response);
       const token = response.data.token;
       
       if (token) {
         localStorage.setItem("authToken", token);
         toast.success("Sign In Successful!");
-        setTimeout(() => navigate("/dashboard"), 1500);
+        // setTimeout(() => navigate("/dashboard"), 1500);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Sign In Failed");
